@@ -1434,6 +1434,7 @@ mod tests {
                 preflight_signal_recording: true,
                 byte_offsets: true,
                 vq_lifecycle_refined: true,
+                journal_v1_retired: true,
             },
         );
         let (leader_query_tx, _leader_query_rx) = restate_worker_api::channel();
