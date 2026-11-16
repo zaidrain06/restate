@@ -636,6 +636,14 @@ where
                 feature_changes.push(PartitionFeatureChange::EnableVqLifecycleRefined);
             }
 
+            // Retiring journal v1 kills the invocations that still use it, so it is opt-in for
+            // now. Its barrier arm runs after the ones above, such as the vqueues migration.
+            if config.common.experimental.is_retire_journal_v1_enabled()
+                && !processor.fsm().features().is_journal_v1_retired()
+            {
+                feature_changes.push(PartitionFeatureChange::RetireJournalV1);
+            }
+
             // Changes that cost no rollback ride along once every replica is held to their
             // minimum version: by the changes enabled before, or by the barrier this round
             // proposes anyway, which also holds the replicas to the partition's current minimum.
